@@ -1,7 +1,7 @@
 const url = require('url');
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
-const jsonHandler = require('./jsonResponses.js');
+const responseHandler = require('./responses.js');
 
 // 1 - pull in the HTTP server module
 
@@ -9,8 +9,8 @@ const jsonHandler = require('./jsonResponses.js');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
-  '/random-joke': jsonHandler.getRandomJokeResponse,
-  '/random-jokes': jsonHandler.getJokesResponse,
+  '/random-joke': responseHandler.getRandomJokeResponse,
+  '/random-jokes': responseHandler.getJokesResponse,
   notFound: htmlHandler.get404Response,
 };
 
@@ -22,8 +22,11 @@ const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const { pathname } = parsedUrl;
 
+  let acceptedTypes = request.headers.accept && request.headers.accept.split(',');
+  acceptedTypes = acceptedTypes || [];
+
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response);
+    urlStruct[pathname](request, response, acceptedTypes);
   } else {
     urlStruct.notFound(request, response);
   }
