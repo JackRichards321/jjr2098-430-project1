@@ -21,6 +21,10 @@ const jokes = [
   { q: 'What do you get when you cross a snowman with a vampire?', a: 'Frostbite' },
 ];
 
+// Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
+// Refactored to an arrow function by ACJ
+const getBinarySize = string => Buffer.byteLength(string, 'utf8');
+
 const getRandomJokeJSON = (limit = 1) => {
   const lim1 = Number(limit);
   const lim2 = !lim1 ? 1 : lim1;
@@ -57,7 +61,7 @@ const getJokeXML = (limit = 1) => {
       `<joke>
         <q>${shuffledJokes[i].q}</q>
         <a>${shuffledJokes[i].a}</a>
-        </joke>`
+        </joke>`,
     );
   }
 
@@ -68,11 +72,11 @@ const getJokeXML = (limit = 1) => {
 
 const getRandomJokeResponse = (request, response, acceptedTypes) => {
   if (acceptedTypes.includes('text/xml')) {
-    response.writeHead(200, { 'Content-Type': 'text/xml' }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'text/xml', 'Content-Length': getBinarySize(getJokeXML()) }); // send response headers
     response.write(getJokeXML()); // send content
     response.end(); // close connection
   } else {
-    response.writeHead(200, { 'Content-Type': 'application/json' }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': getBinarySize(getRandomJokeJSON()) }); // send response headers
     response.write(getRandomJokeJSON()); // send content
     response.end(); // close connection
   }
@@ -83,15 +87,41 @@ const getJokesResponse = (request, response, acceptedTypes) => {
   const { limit } = params;
 
   if (acceptedTypes.includes('text/xml')) {
-    response.writeHead(200, { 'Content-Type': 'text/xml' }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'text/xml', 'Content-Length': getBinarySize(getJokeXML(limit)) }); // send response headers
     response.write(getJokeXML(limit)); // send content
     response.end(); // close connection
   } else {
-    response.writeHead(200, { 'Content-Type': 'application/json' }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': getBinarySize(getRandomJokeJSON(limit)) }); // send response headers
     response.write(getRandomJokeJSON(limit)); // send content
+    response.end(); // close connection
+  }
+};
+
+const getJokeMeta = (request, response, acceptedTypes) => {
+  if (acceptedTypes.includes('text/xml')) {
+    response.writeHead(200, { 'Content-Type': 'text/xml', 'Content-Length': getBinarySize(getJokeXML()) }); // send response headers
+    response.end(); // close connection
+  } else {
+    response.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': getBinarySize(getRandomJokeJSON()) }); // send response headers
+    response.end(); // close connection
+  }
+};
+
+const getJokesMeta = (request, response, acceptedTypes) => {
+  const parsedUrl = url.parse(request.url);
+  const params = query.parse(parsedUrl.query);
+  const { limit } = params;
+
+  if (acceptedTypes.includes('text/xml')) {
+    response.writeHead(200, { 'Content-Type': 'text/xml', 'Content-Length': getBinarySize(getJokeXML(limit)) }); // send response headers
+    response.end(); // close connection
+  } else {
+    response.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': getBinarySize(getRandomJokeJSON(limit)) }); // send response headers
     response.end(); // close connection
   }
 };
 
 module.exports.getRandomJokeResponse = getRandomJokeResponse;
 module.exports.getJokesResponse = getJokesResponse;
+module.exports.getJokeMeta = getJokeMeta;
+module.exports.getJokesMeta = getJokesMeta;
