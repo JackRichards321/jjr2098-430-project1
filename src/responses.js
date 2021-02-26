@@ -23,7 +23,7 @@ const jokes = [
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
-const getBinarySize = string => Buffer.byteLength(string, 'utf8');
+const getBinarySize = (string) => Buffer.byteLength(string, 'utf8');
 
 const getRandomJokeJSON = (limit = 1) => {
   const lim1 = Number(limit);
@@ -72,11 +72,11 @@ const getJokeXML = (limit = 1) => {
 
 const getRandomJokeResponse = (request, response, acceptedTypes) => {
   if (acceptedTypes.includes('text/xml')) {
-    response.writeHead(200, { 'Content-Type': 'text/xml', 'Content-Length': getBinarySize(getJokeXML()) }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'text/xml' }); // send response headers
     response.write(getJokeXML()); // send content
     response.end(); // close connection
   } else {
-    response.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': getBinarySize(getRandomJokeJSON()) }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'application/json' }); // send response headers
     response.write(getRandomJokeJSON()); // send content
     response.end(); // close connection
   }
@@ -87,11 +87,11 @@ const getJokesResponse = (request, response, acceptedTypes) => {
   const { limit } = params;
 
   if (acceptedTypes.includes('text/xml')) {
-    response.writeHead(200, { 'Content-Type': 'text/xml', 'Content-Length': getBinarySize(getJokeXML(limit)) }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'text/xml' }); // send response headers
     response.write(getJokeXML(limit)); // send content
     response.end(); // close connection
   } else {
-    response.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': getBinarySize(getRandomJokeJSON(limit)) }); // send response headers
+    response.writeHead(200, { 'Content-Type': 'application/json' }); // send response headers
     response.write(getRandomJokeJSON(limit)); // send content
     response.end(); // close connection
   }

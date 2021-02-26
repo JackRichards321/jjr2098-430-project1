@@ -6,16 +6,17 @@ const responseHandler = require('./responses.js');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
-  'GET': {
+  GET: {
     '/random-joke': responseHandler.getRandomJokeResponse,
     '/random-jokes': responseHandler.getJokesResponse,
     '/default-styles': htmlHandler.getCSSResponse,
+    '/joke-client': htmlHandler.getJokeClientResponse,
     notFound: htmlHandler.get404Response,
   },
-  'HEAD': {
+  HEAD: {
     '/random-joke': responseHandler.getJokeMeta,
     '/random-jokes': responseHandler.getJokesMeta,
-    notFound: htmlHandler.get404ResponseMeta
+    notFound: htmlHandler.get404ResponseMeta,
   },
 };
 
