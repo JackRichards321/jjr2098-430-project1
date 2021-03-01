@@ -2,7 +2,7 @@ const fs = require('fs'); // pull in the file system module
 
 const errorPage = fs.readFileSync(`${__dirname}/../client/error.html`);
 const styles = fs.readFileSync(`${__dirname}/../client/default-styles.css`);
-const jokeClient = fs.readFileSync(`${__dirname}/../client/joke-client.html`);
+const totClient = fs.readFileSync(`${__dirname}/../client/tot-client.html`);
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -25,13 +25,13 @@ const getCSSResponse = (request, response) => {
   response.end(); // close connection
 };
 
-const getJokeClientResponse = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(jokeClient) }); // send response headers
-  response.write(jokeClient); // send content
+const getTotClientResponse = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(totClient) }); // send response headers
+  response.write(totClient); // send content
   response.end(); // close connection
 };
 
 module.exports.get404Response = get404Response;
 module.exports.get404ResponseMeta = get404ResponseMeta;
 module.exports.getCSSResponse = getCSSResponse;
-module.exports.getJokeClientResponse = getJokeClientResponse;
+module.exports.getTotClientResponse = getTotClientResponse;

@@ -7,15 +7,15 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   GET: {
-    '/random-joke': responseHandler.getRandomJokeResponse,
-    '/random-jokes': responseHandler.getJokesResponse,
+    '/random-tot': responseHandler.getTotResponse,
+    '/random-tots': responseHandler.getTotsResponse,
     '/default-styles': htmlHandler.getCSSResponse,
-    '/joke-client': htmlHandler.getJokeClientResponse,
+    '/tot-client': htmlHandler.getTotClientResponse,
     notFound: htmlHandler.get404Response,
   },
   HEAD: {
-    '/random-joke': responseHandler.getJokeMeta,
-    '/random-jokes': responseHandler.getJokesMeta,
+    '/random-tot': responseHandler.getTotMeta,
+    '/random-tots': responseHandler.getTotsMeta,
     notFound: htmlHandler.get404ResponseMeta,
   },
 };
