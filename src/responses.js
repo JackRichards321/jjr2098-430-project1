@@ -1,27 +1,8 @@
 const underscoreHandler = require('underscore');
 const query = require('querystring');
 const url = require('url');
-
-const items = [
-  { name: 'Apple', wins: 0, category: 'fruit' },
-  { name: 'Banana', wins: 0, category: 'fruit' },
-  { name: 'Orange', wins: 0, category: 'fruit' },
-  { name: 'Lemon', wins: 0, category: 'fruit' },
-  { name: 'Lime', wins: 0, category: 'fruit' },
-  { name: 'Papaya', wins: 0, category: 'fruit' },
-  { name: 'Grape', wins: 0, category: 'fruit' },
-  { name: 'Cherry', wins: 0, category: 'fruit' },
-  { name: 'Blueberry', wins: 0, category: 'fruit' },
-  { name: 'Watermelon', wins: 0, category: 'fruit' },
-  { name: 'Peach', wins: 0, category: 'fruit' },
-  { name: 'Pear', wins: 0, category: 'fruit' },
-  { name: 'Plum', wins: 0, category: 'fruit' },
-  { name: 'Apricot', wins: 0, category: 'fruit' },
-  { name: 'Pineapple', wins: 0, category: 'fruit' },
-  { name: 'Honeydew', wins: 0, category: 'fruit' },
-  { name: 'Cantaloupe', wins: 0, category: 'fruit' },
-  { name: 'Strawberry', wins: 0, category: 'fruit' }
-];
+let wins = require('./wins.js');
+let items = require('./items.js');
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -33,13 +14,15 @@ const getTotJSON = (limit = 1) => {
   const lim3 = lim2 < 1 ? 1 : lim2;
 
   if (lim3 === 1) {
-    let number1 = Math.floor(Math.random() * (items.length));
-    let number2 = Math.floor(Math.random() * (items.length));
-    while (number1 === number2) number2 = Math.floor(Math.random() * (items.length));
+    const number1 = Math.floor(Math.random() * (items.length));
+    // let number2 = Math.floor(Math.random() * (items.length));
+    // while (number1 === number2) number2 = Math.floor(Math.random() * (items.length));
 
     const responseObj = {
-      item1: items[number1].name,
-      item2: items[number2].name,
+      item1: items[number1].item1,
+      item2: items[number1].item2,
+      id1: items[number1].id1,
+      id2: items[number1].id2,
     };
 
     return JSON.stringify(responseObj);
@@ -50,7 +33,7 @@ const getTotJSON = (limit = 1) => {
   const responseObj = [];
 
   for (let i = 0; i < limit; i += 1) {
-    responseObj.push(`item ${i + 1}: ` + shuffledItems[i].name);
+    responseObj.push(`${shuffledItems[i].item1} or ${shuffledItems[i].item2}`);
   }
 
   return JSON.stringify(responseObj);
@@ -63,7 +46,7 @@ const getTotXML = (limit = 1) => {
 
   for (let i = 0; i < limit; i += 1) {
     responseObj.push(
-      `<name>${shuffledItems[i].name}</name>`
+      `<item1>${shuffledItems[i].item1}</item1><p> OR </p><item2>${shuffledItems[i].item2}</item2>`,
     );
   }
 
@@ -127,3 +110,4 @@ module.exports.getTotResponse = getTotResponse;
 module.exports.getTotsResponse = getTotsResponse;
 module.exports.getTotMeta = getTotMeta;
 module.exports.getTotsMeta = getTotsMeta;
+module.exports.wins = wins;

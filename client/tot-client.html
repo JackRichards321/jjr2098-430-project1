@@ -25,6 +25,8 @@
         }
     </style>
     <script>
+        let wins = require('../src/winsArray.js');
+
         const handleResponse = (e) => {
             //console.log("e.target =", e.target); // here, `e.target` is the `xhr` object
             //console.log("e.target.response =", e.target.response); // so that means this is a string of "tot" JSON
@@ -33,14 +35,17 @@
 
             let item1 = obj.item1;
             let item2 = obj.item2;
+            
+            debugger;
 
             document.querySelector("#totContainer").innerHTML = `
                 <p><button class="btnThis"><b>${item1}</b></button></p>
                 <p>OR<p>
                 <p><button class="btnThis"><b>${item2}</b></button></p>
             `;
-
+            debugger;
             document.querySelector(".btnThis").addEventListener("click", winnerPicked(obj));
+            debugger;
         };
 
         const handleFiveResponses = (e) => {
@@ -61,7 +66,7 @@
                 <p>OR<p>
                 <p><button class="btnThis"><b>${item2}</b></button></p>
                 </div>
-            `;
+                `;
             }
 
             document.querySelector(".btnThis").addEventListener("click", winnerPicked(obj));
@@ -97,11 +102,11 @@
             xhr.send();
         };
 
-        const winnerPicked = (item) => {
+        const winnerPicked = (winnerId) => {
             console.log("this button clicked!");
-            item.wins += 1;
-            console.log(item.name);
-            
+            wins[winnerId]++;
+            alert(wins);
+            console.log(wins);
         };
 
         const init = () => {

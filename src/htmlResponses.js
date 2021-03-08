@@ -3,6 +3,8 @@ const fs = require('fs'); // pull in the file system module
 const errorPage = fs.readFileSync(`${__dirname}/../client/error.html`);
 const styles = fs.readFileSync(`${__dirname}/../client/default-styles.css`);
 const totClient = fs.readFileSync(`${__dirname}/../client/tot-client.html`);
+const homePage = fs.readFileSync(`${__dirname}/../client/home-page.html`);
+const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -31,7 +33,33 @@ const getTotClientResponse = (request, response) => {
   response.end(); // close connection
 };
 
+const getHomePage = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(homePage) }); // send response headers
+  response.write(homePage); // send content
+  response.end(); // close connection
+};
+
+const getHomeMeta = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(homePage) }); // send response headers
+  response.end(); // close connection
+};
+
+const getPostPage = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(postPage) }); // send response headers
+  response.write(postPage); // send content
+  response.end(); // close connection
+};
+
+const getPostMeta = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(postPage) }); // send response headers
+  response.end(); // close connection
+};
+
 module.exports.get404Response = get404Response;
 module.exports.get404ResponseMeta = get404ResponseMeta;
 module.exports.getCSSResponse = getCSSResponse;
 module.exports.getTotClientResponse = getTotClientResponse;
+module.exports.getHomePage = getHomePage;
+module.exports.getHomeMeta = getHomeMeta;
+module.exports.getPostPage = getPostPage;
+module.exports.getPostMeta = getPostMeta;

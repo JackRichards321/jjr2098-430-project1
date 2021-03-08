@@ -7,6 +7,8 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   GET: {
+    '/home': htmlHandler.getHomePage,
+    '/post-tot': htmlHandler.getPostPage,
     '/random-tot': responseHandler.getTotResponse,
     '/random-tots': responseHandler.getTotsResponse,
     '/default-styles': htmlHandler.getCSSResponse,
@@ -16,6 +18,8 @@ const urlStruct = {
   HEAD: {
     '/random-tot': responseHandler.getTotMeta,
     '/random-tots': responseHandler.getTotsMeta,
+    '/home': htmlHandler.getHomeMeta,
+    '/post-tot': htmlHandler.getPostMeta,
     notFound: htmlHandler.get404ResponseMeta,
   },
 };

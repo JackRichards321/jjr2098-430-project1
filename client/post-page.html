@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <title>Post a This or That!</title>
+    <link href="./default-styles.css">
+    
+</head>
+
+<body>
+    <h1>Make your own This or That!</h1>
+    <form>
+        <label for="item1">First item:</label><br>
+        <input type="text" id="item1" name="item1"><br>
+        <label for="item2">Second item:</label><br>
+        <input type="text" id="item2" name="item2">
+    </form>
+    <button id="submitTot">Submit!</button>
+</body>
+
+<script>
+    const submitTot = (e) => {
+        const newTot = {};
+
+        if (document.querySelector('#item1').value != '' && document.querySelector('#item2').value != '') {
+            let postedItem1 = document.querySelector('#item1').value;
+            let postedItem2 = document.querySelector('#item2').value;
+
+            newTot = {item1: postedItem1, id1: 30, item2: postedItem2, id2: 31};
+        }
+
+        console.log(newTot);
+        return newTot;
+    };
+
+    document.querySelector('#submitTot').addEventListener("click", submitTot());
+</script>
+
+</html>
