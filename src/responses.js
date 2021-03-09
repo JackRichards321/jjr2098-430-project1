@@ -1,8 +1,8 @@
 const underscoreHandler = require('underscore');
 const query = require('querystring');
 const url = require('url');
-let wins = require('./wins.js');
-let items = require('./items.js');
+// const wins = require('./wins.js');
+const items = require('./items.js');
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -14,26 +14,34 @@ const getTotJSON = (limit = 1) => {
   const lim3 = lim2 < 1 ? 1 : lim2;
 
   if (lim3 === 1) {
-    const number1 = Math.floor(Math.random() * (items.length));
-    // let number2 = Math.floor(Math.random() * (items.length));
-    // while (number1 === number2) number2 = Math.floor(Math.random() * (items.length));
+    const number = Math.floor(Math.random() * (items.length));
 
     const responseObj = {
-      item1: items[number1].item1,
-      item2: items[number1].item2,
-      id1: items[number1].id1,
-      id2: items[number1].id2,
+      item1: items[number].item1.name,
+      item2: items[number].item2.name,
+      wins1: items[number].item1.wins,
+      wins2: items[number].item2.wins
     };
-
+    debugger;
     return JSON.stringify(responseObj);
   }
 
   const shuffledItems = underscoreHandler.shuffle(items);
 
   const responseObj = [];
+  let totObj = {};
 
   for (let i = 0; i < limit; i += 1) {
-    responseObj.push(`${shuffledItems[i].item1} or ${shuffledItems[i].item2}`);
+    if (shuffledItems[i]) {
+      totObj = {
+        item1: shuffledItems[i].item1.name,
+        item2: shuffledItems[i].item2.name,
+        wins1: shuffledItems[i].item1.wins,
+        wins2: shuffledItems[i].item2.wins
+      };
+
+      responseObj.push(totObj);
+    }
   }
 
   return JSON.stringify(responseObj);
@@ -46,7 +54,7 @@ const getTotXML = (limit = 1) => {
 
   for (let i = 0; i < limit; i += 1) {
     responseObj.push(
-      `<item1>${shuffledItems[i].item1}</item1><p> OR </p><item2>${shuffledItems[i].item2}</item2>`,
+      `<item1>${shuffledItems[i].item1.name}</item1><p> OR </p><item2>${shuffledItems[i].item2.name}</item2>`,
     );
   }
 
@@ -106,8 +114,12 @@ const getTotsMeta = (request, response, acceptedTypes) => {
   }
 };
 
+//const addTot = (request, response, acceptedTypes) => {
+
+//};
+
 module.exports.getTotResponse = getTotResponse;
 module.exports.getTotsResponse = getTotsResponse;
 module.exports.getTotMeta = getTotMeta;
 module.exports.getTotsMeta = getTotsMeta;
-module.exports.wins = wins;
+//module.exports.addTot = addTot;

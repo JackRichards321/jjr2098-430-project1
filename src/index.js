@@ -1,4 +1,5 @@
 const url = require('url');
+const query = require('querystring');
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
 const responseHandler = require('./responses.js');
@@ -9,6 +10,7 @@ const urlStruct = {
   GET: {
     '/home': htmlHandler.getHomePage,
     '/post-tot': htmlHandler.getPostPage,
+    '/admin': htmlHandler.getAdminPage,
     '/random-tot': responseHandler.getTotResponse,
     '/random-tots': responseHandler.getTotsResponse,
     '/default-styles': htmlHandler.getCSSResponse,
@@ -18,10 +20,35 @@ const urlStruct = {
   HEAD: {
     '/random-tot': responseHandler.getTotMeta,
     '/random-tots': responseHandler.getTotsMeta,
+    '/admin': htmlHandler.getAdminMeta,
     '/home': htmlHandler.getHomeMeta,
     '/post-tot': htmlHandler.getPostMeta,
     notFound: htmlHandler.get404ResponseMeta,
   },
+};
+
+// code snippet from POST-demo-start
+const handlePost = (request, response, parsedUrl) => {
+  if (parsedUrl.pathname === '/add-tot') {
+    const body = [];
+
+    // https://nodejs.org/api/http.html
+    request.on('error', (err) => {
+      console.dir(err);
+      response.statusCode = 400;
+      response.end();
+    });
+
+    request.on('data', (chunk) => {
+      body.push(chunk);
+    });
+
+    request.on('end', () => {
+      const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
+      const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
+      responseHandler.addTot(request, response, bodyParams);
+    });
+  }
 };
 
 const onRequest = (request, response) => {
@@ -30,6 +57,12 @@ const onRequest = (request, response) => {
 
   let acceptedTypes = request.headers.accept && request.headers.accept.split(',');
   acceptedTypes = acceptedTypes || [];
+
+  if (request.method === 'POST') {
+    // handle POST
+    handlePost(request, response, parsedUrl);
+    return; // bail out of function
+  }
 
   if (urlStruct[request.method][pathname]) {
     urlStruct[request.method][pathname](request, response, acceptedTypes);
