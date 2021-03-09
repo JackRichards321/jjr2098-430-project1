@@ -1,3 +1,60 @@
 * { 
     font-family: sans-serif;
+    padding: 5px;
+}
+
+body {
+    background-color: lightgray;
+}
+
+#navBar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    list-style-type: none;
+}
+
+#navLink {
+    background-color: darkgray;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+#navLink:hover {
+    background-color: white;
+}
+
+header {
+    background-color: navy;
+    color: lightgray;
+    font-size: 2em;
+    padding: 1em;
+    border-radius: 5px;
+}
+
+.selected {
+    background-color: lightblue !important;
+}
+
+h1 {
+    font-family: fantasy;
+    filter: drop-shadow(5px 5px 2px #4444dd);
+}
+
+section {
+    border-bottom: 1px dashed gray;
+}
+
+#totContainer {
+    border-top: 1px solid gray;
+}
+
+#formSection {
+    display: flex;
+    justify-content: center;
 }

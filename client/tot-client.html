@@ -3,33 +3,19 @@
 <head>
     <title>This or That Client</title>
     <link href="./default-styles.css" type="text/css" rel="stylesheet" />
-    <style>
-        header {
-            background-color: navy;
-            color: lightgray;
-            font-size: 2em;
-            padding: 1em;
-        }
-
-        h1 {
-            font-family: fantasy;
-            filter: drop-shadow(5px 5px 2px #4444dd);
-        }
-
-        section {
-            border-bottom: 1px dashed gray;
-        }
-
-        #totContainer {
-            border-top: 1px solid gray;
-        }
-    </style>
-    <script src="../src/clientScript.js"></script>
+    <script src="/clientScript.js"></script>
 </head>
 
 <body>
     <header>
         <p><h1>This or That?!</h1></p>
+        <ul id="navBar">
+            <li><a id="navLink" href="/home">Home</a></li>
+            <li><a id="navLink" class="selected" href="/tot-client">Vote!</a></li>
+            <li><a id="navLink" href="/post-tot">Post a T-o-T</a></li>
+            <li><a id="navLink" href="/admin">Admin Page</a></li>
+            <li><a id="navLink" href="/random-tot">View a T-o-T in JSON</a></li>
+        </ul>
     </header>
 
     <section>

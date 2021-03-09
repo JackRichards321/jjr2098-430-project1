@@ -3,6 +3,7 @@ const query = require('querystring');
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
 const responseHandler = require('./responses.js');
+const scriptHandler = require('./scriptResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -13,8 +14,11 @@ const urlStruct = {
     '/admin': htmlHandler.getAdminPage,
     '/random-tot': responseHandler.getTotResponse,
     '/random-tots': responseHandler.getTotsResponse,
-    '/default-styles': htmlHandler.getCSSResponse,
+    '/default-styles.css': htmlHandler.getCSSResponse,
     '/tot-client': htmlHandler.getTotClientResponse,
+    '/adminScript.js': scriptHandler.getAdminScript,
+    '/postScript.js': scriptHandler.getPostScript,
+    '/clientScript.js': scriptHandler.getClientScript,
     notFound: htmlHandler.get404Response,
   },
   HEAD: {

@@ -20,7 +20,7 @@ const getTotJSON = (limit = 1) => {
       item1: items[number].item1.name,
       item2: items[number].item2.name,
       wins1: items[number].item1.wins,
-      wins2: items[number].item2.wins
+      wins2: items[number].item2.wins,
     };
     debugger;
     return JSON.stringify(responseObj);
@@ -37,7 +37,7 @@ const getTotJSON = (limit = 1) => {
         item1: shuffledItems[i].item1.name,
         item2: shuffledItems[i].item2.name,
         wins1: shuffledItems[i].item1.wins,
-        wins2: shuffledItems[i].item2.wins
+        wins2: shuffledItems[i].item2.wins,
       };
 
       responseObj.push(totObj);
@@ -114,12 +114,12 @@ const getTotsMeta = (request, response, acceptedTypes) => {
   }
 };
 
-//const addTot = (request, response, acceptedTypes) => {
+// const addTot = (request, response, acceptedTypes) => {
 
-//};
+// };
 
 module.exports.getTotResponse = getTotResponse;
 module.exports.getTotsResponse = getTotsResponse;
 module.exports.getTotMeta = getTotMeta;
 module.exports.getTotsMeta = getTotsMeta;
-//module.exports.addTot = addTot;
+// module.exports.addTot = addTot;

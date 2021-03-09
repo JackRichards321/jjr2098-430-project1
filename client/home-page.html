@@ -1,13 +1,23 @@
 <html>
-    <head>
-        <title>This or That?</title>
-        <link href="./default-styles.css">
-    </head>
-    <body>
+
+<head>
+    <title>This or That?</title>
+    <link href="./default-styles.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
         <h1>Welcome to This or That!</h1>
-        <p>Here are some useful pages, click the links to explore!</p>
-        <p><a href="/random-tot">See a random this or that</a></p>
-        <p><a href="/tot-client">Or vote yourself!</a></p>
-        <p>You can also suggest your own <a href="/post-tot">this or thats</a></p>
-    </body>
+        <h2>Useful Links</h2>
+        <ul id="navBar">
+            <li><a id="navLink" class="selected" href="/home">Home</a></li>
+            <li><a id="navLink" href="/tot-client">Vote!</a></li>
+            <li><a id="navLink" href="/post-tot">Post a T-o-T</a></li>
+            <li><a id="navLink" href="/admin">Admin Page</a></li>
+            <li><a id="navLink" href="/random-tot">View a T-o-T in JSON</a></li>
+        </ul>
+    </header>
+    
+</body>
+
 </html>
