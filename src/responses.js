@@ -4,9 +4,9 @@ const url = require('url');
 const fs = require('fs'); // pull in the file system module
 const items = require('./items.js');
 
-const htmlHandler = require('./htmlResponses.js');
+// const htmlHandler = require('./htmlResponses.js');
 
-const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
+//const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -19,7 +19,7 @@ const getTotJSON = (limit = 1) => {
 
   if (lim3 === 1) {
     const shuffledItems = underscoreHandler.shuffle(items);
-  
+
     const responseObj = {
       item1: shuffledItems[0].item1,
       item2: shuffledItems[0].item2,
@@ -121,7 +121,7 @@ const getTotsMeta = (request, response, acceptedTypes) => {
 // next three methods taken and adapted from POST-demo-start
 const sendJSONResponse = (request, response, responseCode, object) => {
   response.writeHead(responseCode, { 'Content-Type': 'text/html' });
-  response.write(postPage);
+  response.write(JSON.stringify(object));
   response.end();
 };
 
@@ -138,36 +138,74 @@ const addTot = (request, response, body) => {
     message: 'both items are required',
   };
 
-  // missing items?
-  if (!body.item1 || !body.item2) {
+  if (body.winner) { // if tot-client
+    if (!body.winner || !body.totID) { // missing params
+      console.log(`missing params${responseCode}`);
+      return sendJSONResponse(request, response, responseCode, responseJSON);
+    }
+
+    if (!items[body.totID]) { // tot doesn't exist
+      responseJSON.id = 'noExistingTot';
+      responseJSON.message = 'there is no tot with this id!';
+      return sendJSONResponse(request, response, responseCode, responseJSON);
+    }
+
+    if (items[body.totID].item1 === body.winner) { // if item1 won
+      items[body.totID].wins1 += 1;
+      responseCode = 204;
+
+      responseJSON.id = 'updated';
+      responseJSON.message = 'winner picked succcessfully!';
+      return sendJSONResponse(request, response, responseCode, responseJSON);
+    }
+
+    if (items[body.totID].item2 === body.winner) { // if item2 won
+      items[body.totID].wins2 += 1;
+      responseCode = 204;
+
+      responseJSON.id = 'updated';
+      responseJSON.message = 'winner picked succcessfully!';
+      return sendJSONResponse(request, response, responseCode, responseJSON);
+    }
+  }
+
+
+  if (body.item1) { // if post-tot
+    console.log('posting');
+    const totID = body.item1 + body.item2;
+    console.log(totID);
+    // missing items?
+    if (!body.item1 || !body.item2) {
+      console.log(responseCode);
+      return sendJSONResponse(request, response, responseCode, responseJSON);
+    }
+
+    // we DID get 2 items
+    if (items[totID]) { // if the tot exists
+      responseCode = 204;
+      console.log(responseCode);
+      return sendJSONResponseMeta(request, response, responseCode);
+    }
+
+    // if the tot does not exist
+    items[totID] = {}; // make a new tot
+    // initialize values
+    items[totID].item1 = body.item1;
+    items[totID].wins1 = 0;
+    items[totID].item2 = body.item2;
+    items[totID].wins2 = 0;
+
+    responseCode = 201; // send "created" status code
+    responseJSON.id = 'created';
+    responseJSON.message = 'Success!';
+    // responseJSON.item1 = items[body.item1].item1;
+    // responseJSON.item2 = items[body.item1].item2;
     console.log(responseCode);
     return sendJSONResponse(request, response, responseCode, responseJSON);
   }
 
-  // we DID get 2 items
-  if (items[body.item1]) { // if the tot exists
-    responseCode = 204;
-    console.log(responseCode);
-    return sendJSONResponseMeta(request, response, responseCode);
-  }
-
-  // if the tot does not exist
-  items[body.item1] = {}; // make a new tot
-  // initialize values
-  items[body.item1].item1 = body.item1;
-  items[body.item1].wins1 = 0;
-  items[body.item1].item2 = body.item2;
-  items[body.item1].wins2 = 0;
-
-  responseCode = 201; // send "created" status code
-  responseJSON.id = 'created';
-  responseJSON.message = 'Success!';
-  responseJSON.item1 = items[body.item1].item1;
-  responseJSON.item2 = items[body.item1].item2;
-  console.log(responseCode);
-  return sendJSONResponse(request, response, responseCode, responseJSON);
+  return false; // prevent bubbling
 };
-
 
 module.exports.getTotResponse = getTotResponse;
 module.exports.getTotsResponse = getTotsResponse;

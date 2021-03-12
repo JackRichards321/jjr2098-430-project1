@@ -10,27 +10,19 @@
     <header>
         <p><h1>This or That?!</h1></p>
         <ul id="navBar">
-            <li><a id="navLink" href="/home">Home</a></li>
-            <li><a id="navLink" class="selected" href="/tot-client">Vote!</a></li>
+            <li><a id="navLink" class="selected" href="/">Home</a></li>
             <li><a id="navLink" href="/post-tot">Post a T-o-T</a></li>
             <li><a id="navLink" href="/admin">Admin Page</a></li>
             <li><a id="navLink" href="/random-tot">View a T-o-T in JSON</a></li>
         </ul>
     </header>
 
-    <section>
-        <h2>Just have time for one this-or-that?</h2>
-        <p><button id="btnTot">Show me two choices!</button></p>
+    <section id="noBorder">
+        <p><button id="btnTot"><b>Show me a this or that!!</b></button></p>
         <div id="totContainer">
-
-        </div>
-    </section>
-
-    <section>
-        <h2>How about 5 this-or-thats?</h2>
-        <p><button id="btnFive">Show me 5 this-or-thats!</button></p>
-        <div id="totsContainer">
-
+            <form id="winForm">
+                <input type="hidden" />
+            </form>
         </div>
     </section>
 

@@ -10,15 +10,14 @@
     <header>
         <h1>Make your own This or That!</h1>
         <ul id="navBar">
-            <li><a id="navLink" href="/home">Home</a></li>
-            <li><a id="navLink" href="/tot-client">Vote!</a></li>
+            <li><a id="navLink" href="/">Home</a></li>
             <li><a id="navLink" class="selected" href="/post-tot">Post a T-o-T</a></li>
             <li><a id="navLink" href="/admin">Admin Page</a></li>
             <li><a id="navLink" href="/random-tot">View a T-o-T in JSON</a></li>
         </ul>
     </header>
     <section id="formSection">
-        <form id="totForm" action="/post-tot" method="post">
+        <form id="totForm" action="/add-tot" method="post">
             <label for="item1">First item:</label><br>
             <input type="text" id="item1" name="item1"><br>
             <label for="item2">Second item:</label><br>

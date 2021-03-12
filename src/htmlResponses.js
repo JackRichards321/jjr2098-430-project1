@@ -3,7 +3,6 @@ const fs = require('fs'); // pull in the file system module
 const errorPage = fs.readFileSync(`${__dirname}/../client/error.html`);
 const stylePage = fs.readFileSync(`${__dirname}/../client/default-styles.css`);
 const totClient = fs.readFileSync(`${__dirname}/../client/tot-client.html`);
-const homePage = fs.readFileSync(`${__dirname}/../client/home-page.html`);
 const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
 const adminPage = fs.readFileSync(`${__dirname}/../client/admin-page.html`);
 
@@ -34,17 +33,6 @@ const getTotClientResponse = (request, response) => {
   response.end(); // close connection
 };
 
-const getHomePage = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(homePage) }); // send response headers
-  response.write(homePage); // send content
-  response.end(); // close connection
-};
-
-const getHomeMeta = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(homePage) }); // send response headers
-  response.end(); // close connection
-};
-
 const getPostPage = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/html', 'Content-Length': getBinarySize(postPage) }); // send response headers
   response.write(postPage); // send content
@@ -71,8 +59,6 @@ module.exports.get404Response = get404Response;
 module.exports.get404ResponseMeta = get404ResponseMeta;
 module.exports.getCSSResponse = getCSSResponse;
 module.exports.getTotClientResponse = getTotClientResponse;
-module.exports.getHomePage = getHomePage;
-module.exports.getHomeMeta = getHomeMeta;
 module.exports.getPostPage = getPostPage;
 module.exports.getPostMeta = getPostMeta;
 module.exports.getAdminPage = getAdminPage;

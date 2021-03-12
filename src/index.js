@@ -9,13 +9,12 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   GET: {
-    '/': htmlHandler.getHomePage,
+    '/': htmlHandler.getTotClientResponse,
     '/post-tot': htmlHandler.getPostPage,
     '/admin': htmlHandler.getAdminPage,
     '/random-tot': responseHandler.getTotResponse,
     '/random-tots': responseHandler.getTotsResponse,
     '/default-styles.css': htmlHandler.getCSSResponse,
-    '/tot-client': htmlHandler.getTotClientResponse,
     '/adminScript.js': scriptHandler.getAdminScript,
     '/postScript.js': scriptHandler.getPostScript,
     '/clientScript.js': scriptHandler.getClientScript,
@@ -25,7 +24,6 @@ const urlStruct = {
     '/random-tot': responseHandler.getTotMeta,
     '/random-tots': responseHandler.getTotsMeta,
     '/admin': htmlHandler.getAdminMeta,
-    '/home': htmlHandler.getHomeMeta,
     '/post-tot': htmlHandler.getPostMeta,
     notFound: htmlHandler.get404ResponseMeta,
   },
@@ -33,8 +31,8 @@ const urlStruct = {
 
 // handlePost and snippet in onRequest taken from POST-demo-start
 const handlePosts = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === '/post-tot') {
-    console.log('handlePosts called with pathname: ' + parsedUrl.pathname);
+  if (parsedUrl.pathname === '/add-tot') {
+    console.log(`handlePosts called with pathname: ${parsedUrl.pathname}`);
     const body = [];
 
     // https://nodejs.org/api/http.html
@@ -51,9 +49,7 @@ const handlePosts = (request, response, parsedUrl) => {
     request.on('end', () => {
       const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
       const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
-      if(parsedUrl.pathname === '/post-tot') {
-        responseHandler.addTot(request, response, bodyParams);
-      } 
+      responseHandler.addTot(request, response, bodyParams);
     });
   }
 };
@@ -67,7 +63,6 @@ const onRequest = (request, response) => {
     handlePosts(request, response, parsedUrl);
     return; // bail out of function
   }
-
 
   let acceptedTypes = request.headers.accept && request.headers.accept.split(',');
   acceptedTypes = acceptedTypes || [];

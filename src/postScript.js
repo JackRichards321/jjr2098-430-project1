@@ -13,7 +13,7 @@ const parseJSON = (xhr) => {
 const handleResponse = (xhr) => {
   const content = document.querySelector('#content');
   console.log(xhr.target);
-  console.log("HANDLERESPONSE POST XHR STATUS: " + xhr.target.status);
+  console.log(`HANDLERESPONSE POST XHR STATUS: ${xhr.target.status}`);
 
   switch (xhr.target.status) {
     case 200:
@@ -36,7 +36,7 @@ const handleResponse = (xhr) => {
 };
 
 const downloadStatus = () => {
-  const pageURL = '/post-tot';
+  const pageURL = '/add-tot';
   const xhr = new XMLHttpRequest();
   xhr.onload = handleResponse;
   xhr.open('GET', pageURL);

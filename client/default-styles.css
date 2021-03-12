@@ -62,3 +62,7 @@ section {
 #content {
     border-bottom: none !important;
 }
+
+#noBorder {
+    border: none !important;
+}
