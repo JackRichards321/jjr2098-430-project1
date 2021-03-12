@@ -1,57 +1,56 @@
-// code snippet from POST-demo-start
-const handlePostResponse = (request, response, parsedUrl) => {
-    if (parsedUrl.pathname === '/post-tot') {
-        const body = [];
+const parseJSON = (xhr) => {
+  const content = document.querySelector('#content');
+  if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
+    const obj = JSON.parse(xhr.response);
+    console.dir(obj);
 
-        // https://nodejs.org/api/http.html
-        request.on('error', (err) => {
-            console.dir(err);
-            response.statusCode = 400;
-            response.end();
-        });
-
-        request.on('data', (chunk) => {
-            body.push(chunk);
-        });
-
-        request.on('end', () => {
-            const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
-            const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
-            responseHandler.addTot(request, response, bodyParams);
-        });
+    if (obj.message) {
+      content.innerHTML += `<p>${obj.message}</p>`;
     }
+  }
 };
 
+const handleResponse = (xhr) => {
+  const content = document.querySelector('#content');
+  console.log(xhr.target);
+  console.log("HANDLERESPONSE POST XHR STATUS: " + xhr.target.status);
 
-// code starter supplied by body-parse demo
-const sendPost = (e, totForm) => {
-    e.preventDefault();
+  switch (xhr.target.status) {
+    case 200:
+      content.innerHTML = '<b>Success!</b>';
+      break;
+    case 201:
+      content.innerHTML = '<b>Created!</b>';
+      break;
+    case 204:
+      content.innerHTML = '<b>Updated (No Content)!</b>';
+      break;
+    case 400:
+      content.innerHTML = '<b>Bad Request!</b>';
+      break;
+    default:
+      content.innerHTML = '<b>Error code not implemented by client</b>';
+  }
 
-    const totAction = totForm.getAttribute('action');
-    const totMethod = totForm.getAttribute('method');
+  parseJSON(xhr);
+};
 
-    const item1Field = totForm.querySelector('#item1Field');
-    const item2Field = totForm.querySelector('#item2Field');
+const downloadStatus = () => {
+  const pageURL = '/post-tot';
+  const xhr = new XMLHttpRequest();
+  xhr.onload = handleResponse;
+  xhr.open('GET', pageURL);
 
-    const xhr = new XMLHttpRequest();
-    xhr.open(totMethod, totAction); // NEW - in the past we've been using "GET"
-
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = handlePostResponse;
-    const formData = `item1=${item1Field.value}&item2=${item2Field.value}`;
-    xhr.send(formData);
-
-    return false; // prevents event bubbling
+  xhr.setRequestHeader('Accept', 'application/javascript');
+  xhr.send();
 };
 
 const init = () => {
-    const totForm = document.querySelector('#totForm');
+  const totForm = document.querySelector('#totForm');
 
-    const postTot = (e) => sendPost(e, totForm);
+  const addMessage = (e) => downloadStatus(e, totForm);
 
-    totForm.addEventListener('submit', postTot);
+  totForm.addEventListener('submit', addMessage);
 };
 
 window.onload = init;

@@ -1,8 +1,12 @@
 const underscoreHandler = require('underscore');
 const query = require('querystring');
 const url = require('url');
-// const wins = require('./wins.js');
+const fs = require('fs'); // pull in the file system module
 const items = require('./items.js');
+
+const htmlHandler = require('./htmlResponses.js');
+
+const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -14,15 +18,15 @@ const getTotJSON = (limit = 1) => {
   const lim3 = lim2 < 1 ? 1 : lim2;
 
   if (lim3 === 1) {
-    const number = Math.floor(Math.random() * (items.length));
-
+    const shuffledItems = underscoreHandler.shuffle(items);
+  
     const responseObj = {
-      item1: items[number].item1.name,
-      item2: items[number].item2.name,
-      wins1: items[number].item1.wins,
-      wins2: items[number].item2.wins,
+      item1: shuffledItems[0].item1,
+      item2: shuffledItems[0].item2,
+      wins1: shuffledItems[0].wins1,
+      wins2: shuffledItems[0].wins2,
     };
-    debugger;
+
     return JSON.stringify(responseObj);
   }
 
@@ -31,13 +35,13 @@ const getTotJSON = (limit = 1) => {
   const responseObj = [];
   let totObj = {};
 
-  for (let i = 0; i < limit; i += 1) {
+  for (let i = 0; i < lim3; i += 1) {
     if (shuffledItems[i]) {
       totObj = {
-        item1: shuffledItems[i].item1.name,
-        item2: shuffledItems[i].item2.name,
-        wins1: shuffledItems[i].item1.wins,
-        wins2: shuffledItems[i].item2.wins,
+        item1: shuffledItems[i].item1,
+        item2: shuffledItems[i].item2,
+        wins1: shuffledItems[i].wins1,
+        wins2: shuffledItems[i].wins2,
       };
 
       responseObj.push(totObj);
@@ -54,7 +58,7 @@ const getTotXML = (limit = 1) => {
 
   for (let i = 0; i < limit; i += 1) {
     responseObj.push(
-      `<item1>${shuffledItems[i].item1.name}</item1><p> OR </p><item2>${shuffledItems[i].item2.name}</item2>`,
+      `<item1>${shuffledItems[i].item1}</item1><p> OR </p><item2>${shuffledItems[i].item2}</item2>`,
     );
   }
 
@@ -114,12 +118,59 @@ const getTotsMeta = (request, response, acceptedTypes) => {
   }
 };
 
-// const addTot = (request, response, acceptedTypes) => {
+// next three methods taken and adapted from POST-demo-start
+const sendJSONResponse = (request, response, responseCode, object) => {
+  response.writeHead(responseCode, { 'Content-Type': 'text/html' });
+  response.write(postPage);
+  response.end();
+};
 
-// };
+const sendJSONResponseMeta = (request, response, responseCode) => {
+  response.writeHead(responseCode, { 'Content-Type': 'application/json' });
+  response.end();
+};
+
+const addTot = (request, response, body) => {
+  // here we are assuming an error, pessimistic aren't we?
+  let responseCode = 400; // 400=bad request
+  const responseJSON = {
+    id: 'missingParams',
+    message: 'both items are required',
+  };
+
+  // missing items?
+  if (!body.item1 || !body.item2) {
+    console.log(responseCode);
+    return sendJSONResponse(request, response, responseCode, responseJSON);
+  }
+
+  // we DID get 2 items
+  if (items[body.item1]) { // if the tot exists
+    responseCode = 204;
+    console.log(responseCode);
+    return sendJSONResponseMeta(request, response, responseCode);
+  }
+
+  // if the tot does not exist
+  items[body.item1] = {}; // make a new tot
+  // initialize values
+  items[body.item1].item1 = body.item1;
+  items[body.item1].wins1 = 0;
+  items[body.item1].item2 = body.item2;
+  items[body.item1].wins2 = 0;
+
+  responseCode = 201; // send "created" status code
+  responseJSON.id = 'created';
+  responseJSON.message = 'Success!';
+  responseJSON.item1 = items[body.item1].item1;
+  responseJSON.item2 = items[body.item1].item2;
+  console.log(responseCode);
+  return sendJSONResponse(request, response, responseCode, responseJSON);
+};
+
 
 module.exports.getTotResponse = getTotResponse;
 module.exports.getTotsResponse = getTotsResponse;
 module.exports.getTotMeta = getTotMeta;
 module.exports.getTotsMeta = getTotsMeta;
-// module.exports.addTot = addTot;
+module.exports.addTot = addTot;

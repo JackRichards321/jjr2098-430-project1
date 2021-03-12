@@ -1,40 +1,40 @@
-const items = [
-  {
-    item1: { name: 'Apple', wins: 0 }, item2: { name: 'Orange', wins: 0 },
+const items = {
+  'Apple': {
+    item1: 'Apple', wins1: 0, item2: 'Orange', wins2: 0,
   },
-  {
-    item1: { name: 'Ham', wins: 0 }, item2: { name: 'Turkey', wins: 0 },
+  'iPhone': {
+    item1: 'iPhone', wins1: 0, item2: 'Android', wins2: 0,
   },
-  {
-    item1: { name: 'Watermelon', wins: 0 }, item2: { name: 'Pineapple', wins: 0 },
+  'Ham': {
+    item1: 'Ham', wins1: 0, item2: 'Turkey', wins2: 0,
   },
-  {
-    item1: { name: 'Cantaloupe', wins: 0 }, item2: { name: 'Honeydew', wins: 0 },
+  'Watermelon': {
+    item1: 'Watermelon', wins1: 0, item2: 'Pineapple', wins2: 0,
   },
-  {
-    item1: { name: 'Dogs', wins: 0 }, item2: { name: 'Cats', wins: 0 },
+  'Cantaloupe': {
+    item1: 'Cantaloupe', wins1: 0, item2: 'Honeydew', wins2: 0,
   },
-  {
-    item1: { name: 'Sprite', wins: 0 }, item2: { name: 'Coca-Cola', wins: 0 },
+  'Dogs': {
+    item1: 'Dogs', wins1: 0, item2: 'Cats', wins2: 0,
   },
-  {
-    item1: { name: 'Mario', wins: 0 }, item2: { name: 'Sonic', wins: 0 },
+  'Sprite': {
+    item1: 'Sprite', wins1: 0, item2: 'Coca-Cola', wins2: 0,
   },
-  {
-    item1: { name: 'Pokemon', wins: 0 }, item2: { name: 'Yu-Gi-Oh', wins: 0 },
+  'Mario': {
+    item1: 'Mario', wins1: 0, item2: 'Sonic', wins2: 0,
   },
-  {
-    item1: { name: 'Cocolate Ice Cream', wins: 0 }, item2: { name: 'Vanilla Ice Cream', wins: 0 },
+  'Pokemon': {
+    item1: 'Pokemon', wins1: 0, item2: 'Yu-Gi-Oh', wins2: 0,
   },
-  {
-    item1: { name: 'Country Music', wins: 0 }, item2: { name: 'Rap Music', wins: 0 },
+  'Chocolate Ice Cream': {
+    item1: 'Chocolate Ice Cream', wins1: 0, item2: 'Vanilla Ice Cream', wins2: 0,
   },
-  {
-    item1: { name: 'Mac', wins: 0 }, item2: { name: 'Windows', wins: 0 },
+  'Country Music': {
+    item1: 'Country Music', wins1: 0, item2: 'Rap Music', wins2: 0,
   },
-  {
-    item1: { name: 'iPhone', wins: 0 }, item2: { name: 'Android', wins: 0 },
+  'Mac': {
+    item1: 'Mac', wins1: 0, item2: 'Windows', wins2: 0,
   },
-];
+};
 
 module.exports = items;

@@ -58,3 +58,7 @@ section {
     display: flex;
     justify-content: center;
 }
+
+#content {
+    border-bottom: none !important;
+}

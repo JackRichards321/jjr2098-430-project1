@@ -9,7 +9,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   GET: {
-    '/home': htmlHandler.getHomePage,
+    '/': htmlHandler.getHomePage,
     '/post-tot': htmlHandler.getPostPage,
     '/admin': htmlHandler.getAdminPage,
     '/random-tot': responseHandler.getTotResponse,
@@ -31,9 +31,10 @@ const urlStruct = {
   },
 };
 
-// code snippet from POST-demo-start
-const handlePost = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === '/add-tot') {
+// handlePost and snippet in onRequest taken from POST-demo-start
+const handlePosts = (request, response, parsedUrl) => {
+  if (parsedUrl.pathname === '/post-tot') {
+    console.log('handlePosts called with pathname: ' + parsedUrl.pathname);
     const body = [];
 
     // https://nodejs.org/api/http.html
@@ -50,7 +51,9 @@ const handlePost = (request, response, parsedUrl) => {
     request.on('end', () => {
       const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
       const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
-      responseHandler.addTot(request, response, bodyParams);
+      if(parsedUrl.pathname === '/post-tot') {
+        responseHandler.addTot(request, response, bodyParams);
+      } 
     });
   }
 };
@@ -59,14 +62,15 @@ const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const { pathname } = parsedUrl;
 
-  let acceptedTypes = request.headers.accept && request.headers.accept.split(',');
-  acceptedTypes = acceptedTypes || [];
-
   if (request.method === 'POST') {
     // handle POST
-    handlePost(request, response, parsedUrl);
+    handlePosts(request, response, parsedUrl);
     return; // bail out of function
   }
+
+
+  let acceptedTypes = request.headers.accept && request.headers.accept.split(',');
+  acceptedTypes = acceptedTypes || [];
 
   if (urlStruct[request.method][pathname]) {
     urlStruct[request.method][pathname](request, response, acceptedTypes);
