@@ -102,7 +102,6 @@ img {
     display: flex;
     flex-direction: row;
     width: 100%;
-    border: 3px solid white;
 }
 
 #imageGirl {
