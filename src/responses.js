@@ -1,12 +1,12 @@
 const underscoreHandler = require('underscore');
 const query = require('querystring');
 const url = require('url');
-const fs = require('fs'); // pull in the file system module
+// const fs = require('fs'); // pull in the file system module
 const items = require('./items.js');
 
 // const htmlHandler = require('./htmlResponses.js');
 
-//const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
+// const postPage = fs.readFileSync(`${__dirname}/../client/post-page.html`);
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
 // Refactored to an arrow function by ACJ
@@ -120,7 +120,7 @@ const getTotsMeta = (request, response, acceptedTypes) => {
 
 // next three methods taken and adapted from POST-demo-start
 const sendJSONResponse = (request, response, responseCode, object) => {
-  response.writeHead(responseCode, { 'Content-Type': 'text/html' });
+  response.writeHead(responseCode, { 'Content-Type': 'application/json' });
   response.write(JSON.stringify(object));
   response.end();
 };
@@ -133,14 +133,13 @@ const sendJSONResponseMeta = (request, response, responseCode) => {
 const addTot = (request, response, body) => {
   // here we are assuming an error, pessimistic aren't we?
   let responseCode = 400; // 400=bad request
-  const responseJSON = {
+  let responseJSON = {
     id: 'missingParams',
-    message: 'both items are required',
+    message: 'must select a winner',
   };
 
   if (body.winner) { // if tot-client
     if (!body.winner || !body.totID) { // missing params
-      console.log(`missing params${responseCode}`);
       return sendJSONResponse(request, response, responseCode, responseJSON);
     }
 
@@ -153,37 +152,37 @@ const addTot = (request, response, body) => {
     if (items[body.totID].item1 === body.winner) { // if item1 won
       items[body.totID].wins1 += 1;
       responseCode = 204;
-
       responseJSON.id = 'updated';
-      responseJSON.message = 'winner picked succcessfully!';
+      responseJSON.message = 'winner picked successfully!';
       return sendJSONResponse(request, response, responseCode, responseJSON);
     }
 
     if (items[body.totID].item2 === body.winner) { // if item2 won
       items[body.totID].wins2 += 1;
       responseCode = 204;
-
       responseJSON.id = 'updated';
       responseJSON.message = 'winner picked succcessfully!';
+      responseJSON.totID = body.totID;
       return sendJSONResponse(request, response, responseCode, responseJSON);
     }
   }
 
-
   if (body.item1) { // if post-tot
-    console.log('posting');
+    responseJSON = {
+      id: 'missingParams',
+      message: 'both items are required',
+    };
+
     const totID = body.item1 + body.item2;
-    console.log(totID);
+
     // missing items?
     if (!body.item1 || !body.item2) {
-      console.log(responseCode);
       return sendJSONResponse(request, response, responseCode, responseJSON);
     }
 
     // we DID get 2 items
     if (items[totID]) { // if the tot exists
       responseCode = 204;
-      console.log(responseCode);
       return sendJSONResponseMeta(request, response, responseCode);
     }
 
@@ -198,13 +197,11 @@ const addTot = (request, response, body) => {
     responseCode = 201; // send "created" status code
     responseJSON.id = 'created';
     responseJSON.message = 'Success!';
-    // responseJSON.item1 = items[body.item1].item1;
-    // responseJSON.item2 = items[body.item1].item2;
-    console.log(responseCode);
+    responseJSON.totID = totID;
     return sendJSONResponse(request, response, responseCode, responseJSON);
   }
 
-  return false; // prevent bubbling
+  return sendJSONResponse(request, response, responseCode, responseJSON);
 };
 
 module.exports.getTotResponse = getTotResponse;

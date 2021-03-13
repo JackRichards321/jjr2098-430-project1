@@ -4,6 +4,7 @@ const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
 const responseHandler = require('./responses.js');
 const scriptHandler = require('./scriptResponses.js');
+const mediaHandler = require('./mediaResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -18,6 +19,7 @@ const urlStruct = {
     '/adminScript.js': scriptHandler.getAdminScript,
     '/postScript.js': scriptHandler.getPostScript,
     '/clientScript.js': scriptHandler.getClientScript,
+    '/totImage.jpg': mediaHandler.getImage,
     notFound: htmlHandler.get404Response,
   },
   HEAD: {
@@ -32,7 +34,6 @@ const urlStruct = {
 // handlePost and snippet in onRequest taken from POST-demo-start
 const handlePosts = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === '/add-tot') {
-    console.log(`handlePosts called with pathname: ${parsedUrl.pathname}`);
     const body = [];
 
     // https://nodejs.org/api/http.html

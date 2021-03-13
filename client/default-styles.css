@@ -42,7 +42,8 @@ header {
 }
 
 h1 {
-    font-family: fantasy;
+    font-family: sans-serif;
+    font-weight: bold !important;
     filter: drop-shadow(5px 5px 2px #4444dd);
 }
 
@@ -51,18 +52,59 @@ section {
 }
 
 #totContainer {
-    border-top: 1px solid gray;
+    display: flex;
+    flex-direction: row;
 }
 
 #formSection {
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 #content {
     border-bottom: none !important;
 }
 
-#noBorder {
+.noBorder {
     border: none !important;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+input[type=text] {
+    width: 20em;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+    background-color: navy;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+img {
+    width: 10em;
+}
+
+#imgDiv {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border: 3px solid white;
+}
+
+#imageGirl {
+    align-self: flex-end;
 }

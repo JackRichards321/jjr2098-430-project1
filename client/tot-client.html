@@ -8,7 +8,10 @@
 
 <body>
     <header>
-        <p><h1>This or That?!</h1></p>
+        <div id="imgDiv">
+            <p><h1>This or That?!</h1></p>
+            <image src="/totImage.jpg" id="imageGirl"></image>
+        </div>
         <ul id="navBar">
             <li><a id="navLink" class="selected" href="/">Home</a></li>
             <li><a id="navLink" href="/post-tot">Post a T-o-T</a></li>
@@ -17,8 +20,8 @@
         </ul>
     </header>
 
-    <section id="noBorder">
-        <p><button id="btnTot"><b>Show me a this or that!!</b></button></p>
+    <section id="formSection" class="noBorder">
+        <p><button id="btnTot"><b>Show me a this or that</b></button></p>
         <div id="totContainer">
             <form id="winForm">
                 <input type="hidden" />
@@ -26,6 +29,7 @@
         </div>
     </section>
 
+    <section id="content"></section>
 </body>
 
 </html>

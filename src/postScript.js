@@ -2,7 +2,6 @@ const parseJSON = (xhr) => {
   const content = document.querySelector('#content');
   if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
     const obj = JSON.parse(xhr.response);
-    console.dir(obj);
 
     if (obj.message) {
       content.innerHTML += `<p>${obj.message}</p>`;
@@ -12,10 +11,8 @@ const parseJSON = (xhr) => {
 
 const handleResponse = (xhr) => {
   const content = document.querySelector('#content');
-  console.log(xhr.target);
-  console.log(`HANDLERESPONSE POST XHR STATUS: ${xhr.target.status}`);
 
-  switch (xhr.target.status) {
+  switch (xhr.status) {
     case 200:
       content.innerHTML = '<b>Success!</b>';
       break;
@@ -35,14 +32,28 @@ const handleResponse = (xhr) => {
   parseJSON(xhr);
 };
 
-const downloadStatus = () => {
-  const pageURL = '/add-tot';
-  const xhr = new XMLHttpRequest();
-  xhr.onload = handleResponse;
-  xhr.open('GET', pageURL);
+const downloadStatus = (e, totForm) => {
+  e.preventDefault();
 
-  xhr.setRequestHeader('Accept', 'application/javascript');
-  xhr.send();
+  const totAction = totForm.getAttribute('action');
+  const totMethod = totForm.getAttribute('method');
+
+  const item1Field = totForm.querySelector('#item1');
+  const item2Field = totForm.querySelector('#item2');
+
+  const xhr = new XMLHttpRequest();
+  xhr.open(totMethod, totAction);
+
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+  xhr.onload = () => handleResponse(xhr);
+
+  const formData = `item1=${item1Field.value}&item2=${item2Field.value}`;
+
+  xhr.send(formData);
+
+  return false; // prevent bubbling
 };
 
 const init = () => {

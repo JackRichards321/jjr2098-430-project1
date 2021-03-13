@@ -11,7 +11,7 @@ const handleAllResponses = (e) => {
       const { wins2 } = obj[i];
 
       document.querySelector('#totDiv').innerHTML += `
-            <div id='totContainer'>
+            <div id='adminContainer'>
             <p><b>${item1}</b> or <b>${item2}</b></p>
             <p><b>Wins: </b>${wins1} <b>Wins: </b>${wins2}</p>
             </div>`;
