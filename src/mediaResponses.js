@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const totImage = fs.readFileSync(`${__dirname}/../client/totImage.jpg`);
-
 const loadFile = (request, response, filepath, type) => {
   const file = path.resolve(__dirname, filepath);
 
